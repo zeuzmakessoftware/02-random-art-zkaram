@@ -24,7 +24,10 @@ import Prelude hiding (lookup,reverse)
 -- 0
 
 assoc :: Int -> String -> [(String, Int)] -> Int
-assoc def key kvs = error "TBD: assoc"
+assoc def _ [] = def
+assoc def key ((x, y):xs)
+    | x == key = y
+    | otherwise = assoc def key xs
 
 --------------------------------------------------------------------------------
 
@@ -43,7 +46,10 @@ assoc def key kvs = error "TBD: assoc"
 -- []
 
 listReverseTR :: [a] -> [a]
-listReverseTR xs = error "TBD: listReverseTR"
+listReverseTR xs = helper xs []
+    where
+        helper [] acc = acc
+        helper (x:xs) acc = helper xs (x : acc)
 
 -- | Double every other integer in a list,
 --   starting with the second element.
@@ -60,7 +66,12 @@ listReverseTR xs = error "TBD: listReverseTR"
 -- []
 
 doubleEveryOtherTR :: [Integer] -> [Integer]
-doubleEveryOtherTR xs = error "TBD: doubleEveryOtherTR"
+doubleEveryOtherTR xs = helper xs [] 0
+    where
+        helper [] acc _ = acc
+        helper (x:xs) acc i
+            | i `mod` 2 == 1 = helper xs (acc ++ [x*2]) (i+1)
+            | otherwise = helper xs (acc ++ [x]) (i+1)
 
 -- | Sum the elements of a list of `Integer`s.
 --
@@ -76,4 +87,7 @@ doubleEveryOtherTR xs = error "TBD: doubleEveryOtherTR"
 -- 36
 
 sumListTR :: [Integer] -> Integer
-sumListTR xs = error "TBD: sumListTR"
+sumListTR xs = helper xs 0
+    where
+        helper [] acc = acc
+        helper (x:xs) acc = helper xs (acc + x)
